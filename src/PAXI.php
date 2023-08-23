@@ -4,6 +4,7 @@ namespace PAXI\SDK;
 
 use PAXI\SDK\Gateway\CryptoGateway;
 use PAXI\SDK\Gateway\PIXGateway;
+use PAXI\SDK\Support\HMACSupport;
 
 class PAXI
 {
@@ -35,20 +36,17 @@ class PAXI
     /**
      * @param string $apiKey
      * @param string $apiSecret
-     * @param string|null $accessToken
+     * @param bool $automaticOauth
      */
-    public function __construct($apiKey, $apiSecret, $accessToken = null)
+    public function __construct($apiKey, $apiSecret, $automaticOauth = true)
     {
-        $this->client = new HTTPClient($this->accessToken);
+        $this->client = new HTTPClient();
         $this->apiKey = $apiKey;
         $this->apiSecret = $apiSecret;
-        $this->accessToken = $accessToken;
 
-        if (!$accessToken) {
+        if ($automaticOauth) {
             $this->oauthToken();
         }
-
-        $this->client->setAuthorization($this->accessToken, "Bearer");
     }
 
     /**
@@ -67,6 +65,8 @@ class PAXI
             throw new \Exception($res["message"] ?? "Access denied");
         }
 
+
+        $this->client->setAuthorization($res["access_token"], "Bearer");
         $this->accessToken = $res["access_token"];
         $this->refreshToken = $res["refresh_token"];
         return true;
@@ -89,6 +89,34 @@ class PAXI
         $this->accessToken = $res["access_token"];
         $this->refreshToken = $res["refresh_token"];
         return true;
+    }
+
+    /**
+     * @param string $webhookSecret
+     * @return bool
+     */
+    public function handleWebhook($webhookSecret)
+    {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+            http_response_code(400); // 400 - Bad Request
+            exit;
+        }
+
+        $receivedHmac = HMACSupport::getFromHTTPHeader();
+        if (!$receivedHmac) {
+            http_response_code(403); // 403 - Forbidden
+            exit;
+        }
+
+        $input = file_get_contents('php://input');
+        $payload = json_decode($input, true);
+
+        if (!HMACSupport::verifyHash($receivedHmac, $input, $webhookSecret)) {
+            http_response_code(401); // 401 - Unauthorized
+            exit;
+        }
+
+        return $payload;
     }
 
     /**
