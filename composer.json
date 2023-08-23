@@ -1,14 +1,6 @@
 {
     "name": "paxi-com-br/php-sdk",
     "description": "Desenvolva sua solução PHP com a SDK oficial da PAXI.",
-    "keywords": [
-        "paxi-com-br/php-sdk",
-        "paxi/php-sdk",
-        "paxi.com.br php sdk",
-        "paxi php sdk",
-        "paxi.com.br api sdk",
-        "paxi api sdk"
-    ],
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/paxi-com-br/php-sdk",
