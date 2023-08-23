@@ -2,6 +2,9 @@
 
 namespace PAXI\SDK;
 
+use PAXI\SDK\Gateway\CryptoGateway;
+use PAXI\SDK\Gateway\PIXGateway;
+
 class PAXI
 {
     /**
@@ -94,5 +97,21 @@ class PAXI
     public function withApi()
     {
         return $this->client;
+    }
+
+    /**
+     * @return PIXGateway
+     */
+    public function withPix()
+    {
+        return new PIXGateway($this);
+    }
+
+    /**
+     * @return CryptoGateway
+     */
+    public function withCrypto()
+    {
+        return new CryptoGateway($this);
     }
 }
