@@ -12,9 +12,10 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/paxi-com-br/php-sdk",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "PAXI\\": "src/"
+            "PAXI\\SDK\\": "src/"
         }
     },
     "authors": [
