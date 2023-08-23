@@ -34,7 +34,7 @@ class HMACSupport
      */
     public static function generateHash($payload, $secret)
     {
-        return hash_hmac('sha256', $payload, $secret);
+        return 'sha256:' . hash_hmac('sha256', $payload, $secret);
     }
     
     /**
@@ -45,6 +45,10 @@ class HMACSupport
      */
     public static function verifyHash($received, $payload, $secret)
     {
+        if (strpos($received, "sha256:") !== 0) {
+            $received = 'sha256:' . $received;
+        }
+
         return $received === self::generateHash($payload, $secret);
     }
 }
