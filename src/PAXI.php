@@ -87,4 +87,12 @@ class PAXI
         $this->refreshToken = $res["refresh_token"];
         return true;
     }
+
+    /**
+     * @return HTTPClient
+     */
+    public function withApi()
+    {
+        return $this->client;
+    }
 }
