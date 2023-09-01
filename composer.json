@@ -2,7 +2,7 @@
     "name": "paxi-com-br/php-sdk",
     "description": "Desenvolva sua solução PHP com a SDK oficial da PAXI.",
     "type": "library",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "license": "MIT",
     "homepage": "https://github.com/paxi-com-br/php-sdk",
     "minimum-stability": "stable",
